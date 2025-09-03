@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>اختراق سفارة الجزائر</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #ff0000;
+            text-align: center;
+            cursor: none;
+        }
+        .algerian-flag {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 250px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/1200px-Flag_of_Algeria.svg.png');
+            background-size: cover;
+            z-index: 10;
+            animation: burnFlag 15s linear forwards;
+            box-shadow: 0 0 50px red;
+        }
+        @keyframes burnFlag {
+            0% { 
+                opacity: 1;
+                filter: brightness(1) hue-rotate(0deg);
+            }
+            30% {
+                filter: brightness(1.5) hue-rotate(20deg);
+            }
+            60% {
+                opacity: 0.7;
+                filter: brightness(2) hue-rotate(40deg) blur(2px);
+            }
+            100% { 
+                opacity: 0;
+                filter: brightness(0) hue-rotate(60deg) blur(10px);
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+        }
+        .fire-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(255, 100, 0, 0.8) 0%,
+                rgba(255, 50, 0, 0.6) 30%,
+                rgba(200, 0, 0, 0.4) 70%,
+                transparent 100%);
+            z-index: 20;
+            opacity: 0;
+            animation: fireRise 12s ease-in forwards;
+            pointer-events: none;
+        }
+        @keyframes fireRise {
+            0% { opacity: 0; }
+            40% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        .hacked-message {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            text-shadow: 0 0 20px #ff0000;
+            z-index: 100;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        .signature {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2.5em;
+            color: #0f0;
+            font-weight: bold;
+            text-shadow: 0 0 10px #0f0;
+            z-index: 200;
+        }
+        .scrolling-text {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            font-size: 1.5em;
+            color: #0ff;
+            white-space: nowrap;
+            animation: scroll 15s linear infinite;
+            z-index: 200;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        #burning-sound {
+            display: none;
+        }
+    </style>
+</head>
+<body onload="startAttack()">
+
+    <div class="algerian-flag"></div>
+    <div class="fire-overlay"></div>
+    <div class="scrolling-text">KA09</div>
+    <div class="hacked-message">
+<br>
+        <span style="font-size: 0.7em;">SEE YOU LATER</span>
+    </div>
+    <div class="signature">#KA09</div>
+
+    <audio id="burning-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-fire-large-loop-3051.mp3" preload="auto" loop></audio>
+
+    <script>
+        function startAttack() {
+            document.getElementById('burning-sound').play();
+            
+            // إضافة شرارات النار
+            setInterval(function() {
+                for (let i = 0; i < 5; i++) {
+                    let spark = document.createElement('div');
+                    spark.style.position = 'absolute';
+                    spark.style.left = Math.random() * window.innerWidth + 'px';
+                    spark.style.top = Math.random() * window.innerHeight + 'px';
+                    spark.style.width = '8px';
+                    spark.style.height = '8px';
+                    spark.style.background = 'radial-gradient(circle, yellow, orange, red, black)';
+                    spark.style.borderRadius = '50%';
+                    spark.style.zIndex = '50';
+                    document.body.appendChild(spark);
+                    
+                    setTimeout(function() { spark.remove(); }, 2000);
+                }
+            }, 300);
+
+            // إضافة تأثير الرماد المتساقط
+            setInterval(function() {
+                let ash = document.createElement('div');
+                ash.style.position = 'absolute';
+                ash.style.left = Math.random() * window.innerWidth + 'px';
+                ash.style.top = '-10px';
+                ash.style.width = '3px';
+                ash.style.height = '3px';
+                ash.style.background = 'rgba(100, 100, 100, 0.7)';
+                ash.style.borderRadius = '50%';
+                ash.style.zIndex = '30';
+                document.body.appendChild(ash);
+                
+                let fallSpeed = 2 + Math.random() * 3;
+                let fall = setInterval(function() {
+                    ash.style.top = (parseInt(ash.style.top) + fallSpeed) + 'px';
+                    if (parseInt(ash.style.top) > window.innerHeight) {
+                        ash.remove();
+                        clearInterval(fall);
+                    }
+                }, 50);
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
